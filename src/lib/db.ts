@@ -22,6 +22,9 @@ const connectDb = async ()=>{
         const connect = await cached.promise
         return connect
     } catch (error){
-
+        console.log(error);
+        
     }
 }
+
+export default connectDb
