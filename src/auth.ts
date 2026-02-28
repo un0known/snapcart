@@ -20,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     if(!user){
                         throw new Error("user does not exist")
                     }
-                    const passMatch = await bcrypt.compare(password, user.Password)
+                    const passMatch = await bcrypt.compare(password, user.password)
                     if(!passMatch){
                         throw new Error("incorrect password")
                     }
@@ -56,7 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     pages: {
         signIn: "/login",
-        error: "login",
+        error: "/login",
     },
     session: {
         strategy: "jwt",
