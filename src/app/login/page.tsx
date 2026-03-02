@@ -17,13 +17,14 @@ function Login() {
     const navigate = useRouter()
     const session = useSession()
     console.log(session)
-    const handleLogin = async (e:React.SubmitEvent)=>{
+    const handleLogin = async (e: React.SubmitEvent) => {
         e.preventDefault()
         setLoading(true)
         try {
-            await signIn("credentials",{
+            await signIn("credentials", {
                 email, password
             })
+            navigate.push("/")
             setLoading(false)
         } catch (error) {
             console.log(error)
@@ -54,7 +55,7 @@ function Login() {
                 transition={{ duration: 0.6 }}
                 className='flex flex-col gap-5 w-full max-w-sm'
             >
-                
+
 
                 {/* email */}
                 <div
@@ -97,7 +98,7 @@ function Login() {
                     ${formValidation ? "bg-green-600 hover:bg-green-700 text-white"
                                 : "bg-gray-300 text-gray-500 cursor-not-allowed"} 
                     `}>
-                        {loading? <Loader2 className='w-5 h-5 animate-spin' /> : "Log In"}
+                            {loading ? <Loader2 className='w-5 h-5 animate-spin' /> : "Log In"}
                         </button>
                     })()
                 }
@@ -109,18 +110,18 @@ function Login() {
                 </div>
 
 
-                <button className='w-full flex items-center justify-center gap-3 border border-gray-300
+                <div className='w-full flex items-center justify-center gap-3 border border-gray-300
                 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200'
-                onClick={()=>signIn("google")}>
+                    onClick={() => signIn("google", {callbackUrl: "/"})}>
                     <Image src={googleimg} width={20} height={20} alt='google' />
                     Continue with Google
-                </button>
+                </div>
 
             </motion.form>
 
             <p
-            onClick={()=>navigate.push("/register")}
-            className='text-gray600 mt-6 text-sm flex items-center gap-1 cursor-pointer'>
+                onClick={() => navigate.push("/register")}
+                className='text-gray600 mt-6 text-sm flex items-center gap-1 cursor-pointer'>
                 Want to create an account ? <LogIn className='w-4 h-4' /> <span className='text-green-600'>sign Up</span>
             </p>
 

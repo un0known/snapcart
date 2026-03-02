@@ -31,7 +31,7 @@ function RegisterForm({ previousStep }: propType) {
             const result = await axios.post("/api/auth/register", {
                 name, email, password
             })
-            console.log(result.data);
+            navigate.push("/login")
             setLoading(false)
 
         } catch (error) {
@@ -133,12 +133,12 @@ function RegisterForm({ previousStep }: propType) {
                 </div>
 
 
-                <button className='w-full flex items-center justify-center gap-3 border border-gray-300
+                <div className='w-full flex items-center justify-center gap-3 border border-gray-300
                 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200'
-                onClick={()=>signIn("google")}>
+                onClick={()=>signIn("google", {callbackUrl: "/"})}>
                     <Image src={googleimg} width={20} height={20} alt='google' />
                     Continue with Google
-                </button>
+                </div>
 
             </motion.form>
 
