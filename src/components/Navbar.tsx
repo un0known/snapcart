@@ -1,5 +1,5 @@
 'use client'
-import { LogOut, Package, Search, ShoppingCart, User } from 'lucide-react'
+import { LogOut, Package, Search, ShoppingCart, User, X } from 'lucide-react'
 import mongoose from 'mongoose'
 import { AnimatePresence, motion } from 'motion/react'
 import { div } from 'motion/react-client'
@@ -20,16 +20,17 @@ interface IUser {
 function Navbar({ user }: { user: IUser }) {
 
   const [dropDown, setDropDown] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const profileDropDown = useRef<HTMLDivElement>(null)
 
-  useEffect(()=>{
-    const handleClickOutside = (e:MouseEvent)=>{
-      if(profileDropDown.current && !profileDropDown.current.contains(e.target as Node)){
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (profileDropDown.current && !profileDropDown.current.contains(e.target as Node)) {
         setDropDown(false)
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
-    return ()=> document.removeEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
 
   }, [])
 
@@ -56,6 +57,14 @@ function Navbar({ user }: { user: IUser }) {
 
       <div className='flex items-center gap-3 md:gap-6 relative'>
 
+        {/* search box in mobile device on right side */}
+        <div className='bg-white rounded-full w-11 h-11 flex items-center justify-center shadow-md
+        hover:scale-105 transition-transform md:hidden'
+          onClick={() => setSearchOpen(prev => !prev)}
+        >
+          <Search className='text-green-600 w-6 h-6' />
+        </div>
+
         {/* CART */}
         <Link href={""}
           className='relative bg-white rounded-full w-11 h-11 flex items-center justify-center shadow-md hover:scale-105 transition'>
@@ -80,11 +89,11 @@ function Navbar({ user }: { user: IUser }) {
           {/* Dropdown menu */}
           <AnimatePresence>
             {dropDown && <motion.div
-            initial={{opacity:0, y: -10, scale:0.95 }}
-            animate={{opacity:1, y: 0, scale:1}}
-            transition={{duration:0.4}}
-            exit={{opacity: 0, y: -10, scale: 0.95}}
-            className='absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-xl border border-gray-200 p-3 z-999'
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              className='absolute right-0 mt-3 w-56 bg-white rounded-2xl shadow-xl border border-gray-200 p-3 z-999'
             >
               {/* DropDown content */}
               <div className='flex items-center gap-3 px-3 py-2 border-b border-gray-100'>
@@ -101,23 +110,47 @@ function Navbar({ user }: { user: IUser }) {
 
               {/* my orders */}
               <Link href={""}
-              onClick={()=>setDropDown(false)}
-              className='flex items-center gap-2 px-3 py-3 hover:bg-green-50 rounded-lg text-gray-700 font-medium'>
+                onClick={() => setDropDown(false)}
+                className='flex items-center gap-2 px-3 py-3 hover:bg-green-50 rounded-lg text-gray-700 font-medium'>
                 <Package className='w-5 h-5 text-green-600' />
                 My Orders
               </Link>
 
               {/* Log Out Button */}
-              <button 
-              onClick={()=>{setDropDown(false)
-                 signOut({callbackUrl: "/login"})}}
-              className='flex items-center w-full gap-2 px-3 py-3 hover:bg-red-50 rounded-lg text-gray-700 font-medium'>
+              <button
+                onClick={() => {
+                  setDropDown(false)
+                  signOut({ callbackUrl: "/login" })
+                }}
+                className='flex items-center w-full gap-2 px-3 py-3 hover:bg-red-50 rounded-lg text-gray-700 font-medium'>
                 <LogOut className='w-5 h-5 text-red-600' />
-                Log Out 
+                Log Out
               </button>
 
             </motion.div>}
 
+          </AnimatePresence>
+
+                {/* mobile device SEARCH DROPDOWN */}
+          <AnimatePresence>
+            {searchOpen && <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              className='fixed top-24 left-1/2 -translate-x-1/2 w-[90%] bg-white rounded-full
+              shadow-lg z-40 flex items-center px-4 py-2'
+            >
+              <Search className='text-gray-500 w-5 h-5 mr-2' />
+              <form className='grow'>
+                <input type="text" className='w-full outline-none text-gray-700'
+                placeholder='Search groceries...' />
+              </form>
+              <button onClick={()=>setSearchOpen(false)}>
+                <X className='text-gray-500 w-5 h-5' />
+              </button>
+
+            </motion.div>}
           </AnimatePresence>
         </div>
       </div>
