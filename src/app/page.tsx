@@ -15,14 +15,18 @@ export default async function Home() {
     redirect("/login")
   }
 
-  const inComplete = !user.mobile || !user.role || (!user.mobile && user.role == "uer")
+  const inComplete = !user.mobile || !user.role || (!user.mobile && user.role == "user")
   if(inComplete){
     return <EditRoleMobile />
   }
 
+  const plainUser = JSON.parse(JSON.stringify(user))
+  // console.log("this is plainuser",plainUser)
+  // console.log("this is user",user)
+
   return (
     <>
-    <Navbar user={user}/>
+    <Navbar user={plainUser}/>
     </>
   );
 }
