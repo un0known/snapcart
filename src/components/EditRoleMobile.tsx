@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import { motion } from "motion/react"
 import { Bike, User, UserCog } from 'lucide-react'
 import axios from 'axios'
-import { redirect } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 function EditRoleMobile() {
     const [roles, setRoles] = useState([
@@ -13,6 +14,8 @@ function EditRoleMobile() {
     ])
     const [selectedRole, setSelectedRole] = useState("")
     const [mobile, setMobile] = useState("")
+    const {update} = useSession()
+    const navigate = useRouter()
     // fetch API
     const handleEdit = async ()=>{
         try {
@@ -20,8 +23,9 @@ function EditRoleMobile() {
                 role:selectedRole,
                 mobile
             })
+            await update({role:selectedRole})
             console.log(result.data)
-            redirect("/")
+            navigate.push("/")
         } catch (error) {
             console.log(error)
         }
