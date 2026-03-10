@@ -7,8 +7,8 @@ interface IGrocery{
     price: string,
     unit : string,
     image : string,
-    createdAt? : Date,
-    updateAt? : Date
+    createdAt?: Date,
+    updateAt?: Date
 }
 
 const grocerySchema = new mongoose.Schema<IGrocery>({
